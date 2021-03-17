@@ -1,0 +1,1 @@
+<a href="{{route('movies.index')}}">Lista film</a>

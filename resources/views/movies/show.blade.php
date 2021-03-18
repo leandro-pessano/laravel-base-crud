@@ -2,6 +2,6 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Trama</h1>
+<h1>Trama {{$movie->titolo}}</h1>
 <p>{{$movie->trama}}</p>
 @endsection

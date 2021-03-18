@@ -57,10 +57,14 @@ class MovieController extends Controller
      */
     public function show($id)
     {
-        $data = [
+        if (Movie::find($id)) {
+            $data = [
             'movie' => Movie::find($id)
         ];
         return view('movies.show', $data);
+        }
+        
+        abort('404');
     }
 
     /**

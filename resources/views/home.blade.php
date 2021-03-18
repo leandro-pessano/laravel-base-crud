@@ -1,1 +1,2 @@
-<a href="{{route('movies.index')}}">Lista film</a>
+@section('title', 'Home')
+@extends('layouts.app')

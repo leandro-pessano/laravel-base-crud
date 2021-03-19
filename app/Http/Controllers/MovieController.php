@@ -40,13 +40,21 @@ class MovieController extends Controller
     {
         $data = $request->all();
 
+        $request->validate([
+            'titolo' => 'required|unique:movies|max:255',
+            'regista' => 'required|max:255',
+            'anno' => 'required|numeric|digits:4',
+            'trama' => 'required'
+        ]);
+
         $newMovie = new Movie();
 
         $newMovie->fill($data);
 
         $newMovie->save();
 
-        return redirect()->route('movies.show', $newMovie->find($newMovie->id));
+        // return redirect()->route('movies.show', $newMovie->find($newMovie->id));
+        return redirect()->route('movies.show', $newMovie->id);
     }
 
     /**

@@ -54,7 +54,7 @@ class MovieController extends Controller
         $newMovie->save();
 
         // return redirect()->route('movies.show', $newMovie->find($newMovie->id));
-        return redirect()->route('movies.show', $newMovie->id);
+        return redirect()->route('movies.index')->with('status', 'Film aggiunto');;
     }
 
     /**
@@ -67,9 +67,9 @@ class MovieController extends Controller
     {
         if (Movie::find($id)) {
             $data = [
-            'movie' => Movie::find($id)
-        ];
-        return view('movies.show', $data);
+                'movie' => Movie::find($id)
+            ];
+            return view('movies.show', $data);
         }
         
         abort('404');
@@ -81,9 +81,16 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Movie $movie)
     {
-        //
+        if ($movie) {
+            $data = [
+                'movie' => $movie
+            ];
+            return view('movies.edit', $data);
+        }
+        
+        abort('404');
     }
 
     /**
@@ -93,9 +100,20 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Movie $movie)
     {
-        //
+        $data = $request->all();
+
+        $request->validate([
+            'titolo' => 'required|max:255',
+            'regista' => 'required|max:255',
+            'anno' => 'required|numeric|digits:4',
+            'trama' => 'required'
+        ]);
+
+        $movie->update($data);
+
+        return redirect()->route('movies.show', $movie);
     }
 
     /**
@@ -104,8 +122,10 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Movie $movie)
     {
-        //
+        $movie->delete();
+
+        return redirect()->route('movies.index')->with('status', 'Film eliminato');
     }
 }
